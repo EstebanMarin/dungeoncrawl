@@ -1,0 +1,14 @@
+[package]
+name = "dungeoncrawl"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bracket-lib = "~0.8.7"
+
+# freetype-rs 0.26 calls slice::from_raw_parts(null, 0) on empty glyph bitmaps,
+# which trips rustc's debug UB precondition check (a benign zero-length read).
+# That check is gated on the root binary's debug-assertions, so disable it here
+# for the dev profile to let `cargo run` work.
+[profile.dev]
+debug-assertions = false
