@@ -1,6 +1,7 @@
 use bracket_lib::prelude::*;
 
 mod map;
+mod map_builder;
 mod player;
 
 mod prelude {
@@ -13,6 +14,8 @@ mod prelude {
 
 use prelude::*;
 
+use crate::map_builder::MapBuilder;
+
 struct State {
     map: Map,
     player: Player,
@@ -20,21 +23,21 @@ struct State {
 
 impl State {
     fn new() -> Self {
-        State {
-	    map: Map::new(),
-	    player: Player::new(
-		Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-	    ),
-	}
+        let mut rng = RandomNumberGenerator::new();
+        let map_builder = MapBuilder::new(&mut rng);
+        Self {
+            map: map_builder.map,
+            player: Player::new(Point::new(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)),
+        }
     }
 }
 
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         ctx.cls();
-	self.player.update(ctx, &self.map);
+        self.player.update(ctx, &self.map);
         self.map.render(ctx);
-	self.player.render(ctx);
+        self.player.render(ctx);
     }
 }
 
