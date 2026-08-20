@@ -14,8 +14,8 @@ impl Player {
             let delta = match key {
                 VirtualKeyCode::Left => Point::new(-1, 0),
                 VirtualKeyCode::Right => Point::new(1, 0),
-                VirtualKeyCode::Up => Point::new(0, -1),
-                VirtualKeyCode::Down => Point::new(0, 1),
+                VirtualKeyCode::Up => Point::new(0, 1),
+                VirtualKeyCode::Down => Point::new(0, -1),
                 _ => Point::zero(),
             };
             let new_position = self.position + delta;
