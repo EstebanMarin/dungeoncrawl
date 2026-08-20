@@ -55,8 +55,8 @@ impl GameState for State {
         ctx.cls();
         ctx.set_active_console(1);
         ctx.cls();
-	self.resources.insert(ctx.key);
-	self.system.execute(&mut self.ecs, &mut self.resources);
+        self.resources.insert(ctx.key);
+        self.system.execute(&mut self.ecs, &mut self.resources);
         // TODO: Render Draw Buffer
     }
 }
