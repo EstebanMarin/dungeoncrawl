@@ -1,6 +1,6 @@
 use crate::prelude::*;
 
-pub fn spawn_player(ecs: &mut World, post: Point) {
+pub fn spawn_player(ecs: &mut World, pos: Point) {
     ecs.push((
         Player,
         pos,
