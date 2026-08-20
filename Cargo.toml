@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 bracket-lib = "~0.8.7"
+legion = "=0.3.1"
 
 # freetype-rs 0.26 calls slice::from_raw_parts(null, 0) on empty glyph bitmaps,
 # which trips rustc's debug UB precondition check (a benign zero-length read).

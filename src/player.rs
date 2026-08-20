@@ -22,7 +22,7 @@ impl Player {
             if map.can_enter_tile(new_position) {
                 self.position = new_position;
                 camera.on_player_move(new_position);
-            }
+            }q
         }
     }
 
