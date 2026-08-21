@@ -15,18 +15,18 @@ pub fn tooltips(
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(2);
     positions
-        .iter(ecs)
-        .filter(|(_, pos, _)| **pos == map_pos) // (5)
+        .iter(ecs) // (5)
+        .filter(|(_, pos, _)| **pos == map_pos) // (6)
         .for_each(|(entity, _, name)| {
-            let screen_pos = *mouse_pos * 4; // (6)
+            let screen_pos = *mouse_pos * 4; // (7)
             let display = if let Ok(health) = ecs
-                .entry_ref(*entity) // (7)
+                .entry_ref(*entity) // (8)
                 .unwrap()
                 .get_component::<Health>()
             {
-                format!("{} : {} hp", &name.0, health.current) // (8)
+                format!("{} : {} hp", &name.0, health.current) // (9)
             } else {
-                // (9)
+                // (10)
                 name.0.clone()
             };
             draw_batch.print(screen_pos, &display);

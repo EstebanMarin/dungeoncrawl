@@ -34,7 +34,7 @@ pub fn chasing(#[resource] map: &Map, ecs: &SubWorld, commands: &mut CommandBuff
                 *player_pos
             };
 
-            let mut attacked = false;
+            let mut attacked = falsen;
             positions
                 .iter(ecs)
                 .filter(|(_, target_pos, _)| **target_pos == destination)

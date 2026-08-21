@@ -2,7 +2,6 @@ use crate::prelude::*;
 
 #[system]
 pub fn map_render(#[resource] map: &Map, #[resource] camera: &Camera) {
-    // (1)
     let mut draw_batch = DrawBatch::new();
     draw_batch.target(0);
     for y in camera.top_y..=camera.bottom_y {
@@ -16,7 +15,7 @@ pub fn map_render(#[resource] map: &Map, #[resource] camera: &Camera) {
                     TileType::Wall => to_cp437('#'),
                 };
                 draw_batch.set(
-                    // (2)
+                    // (1)
                     pt - offset,
                     ColorPair::new(WHITE, BLACK),
                     glyph,
@@ -24,5 +23,5 @@ pub fn map_render(#[resource] map: &Map, #[resource] camera: &Camera) {
             }
         }
     }
-    draw_batch.submit(0).expect("Batch error"); // (3)
+    draw_batch.submit(0).expect("Batch error"); // (2)
 }
