@@ -1,4 +1,4 @@
-use crate::prelude::*;
+pub use crate::prelude::*;
 
 #[system]
 #[write_component(Point)]
@@ -25,7 +25,7 @@ pub fn player_input(
                 if map.can_enter_tile(destination) {
                     *pos = destination;
                     camera.on_player_move(destination);
-		    *turn_state = TurnState::PlayerTurn;
+                    *turn_state = TurnState::PlayerTurn;
                 }
             })
         }
