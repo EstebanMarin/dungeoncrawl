@@ -23,7 +23,7 @@ impl MapBuilder {
     }
 
     fn fill(&mut self, tile: TileType) {
-        self.map.titles.iter_mut().for_each(|t| *t = tile);
+        self.map.tiles.iter_mut().for_each(|t| *t = tile);
     }
 
     fn build_random_rooms(&mut self, rng: &mut RandomNumberGenerator) {
@@ -45,7 +45,7 @@ impl MapBuilder {
                 room.for_each(|p| {
                     if p.x > 0 && p.x < SCREEN_WIDTH && p.y > 0 && p.y < SCREEN_HEIGHT {
                         let idx = map_idx(p.x, p.y);
-                        self.map.titles[idx] = TileType::Floor;
+                        self.map.tiles[idx] = TileType::Floor;
                     }
                 });
                 self.rooms.push(room);
@@ -57,7 +57,7 @@ impl MapBuilder {
         use std::cmp::{max, min};
         for y in min(y1, y2)..=max(y1, y2) {
             if let Some(idx) = self.map.try_idx(Point::new(x, y)) {
-                self.map.titles[idx as usize] = TileType::Floor;
+                self.map.tiles[idx as usize] = TileType::Floor;
             }
         }
     }
@@ -66,7 +66,7 @@ impl MapBuilder {
         use std::cmp::{max, min};
         for x in min(x1, x2)..=max(x1, x2) {
             if let Some(idx) = self.map.try_idx(Point::new(x, y)) {
-                self.map.titles[idx as usize] = TileType::Floor;
+                self.map.tiles[idx as usize] = TileType::Floor;
             }
         }
     }
