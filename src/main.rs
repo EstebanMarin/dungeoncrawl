@@ -1,4 +1,4 @@
-use bracket_lib::prelude::*;
+#![warn(clippy::pedantic)]
 
 mod camera;
 mod components;
@@ -6,7 +6,7 @@ mod map;
 mod map_builder;
 mod spawner;
 mod systems;
-mod turn_states;
+mod turn_state;
 
 mod prelude {
     pub use bracket_lib::prelude::*;
@@ -20,14 +20,13 @@ mod prelude {
     pub use crate::camera::*;
     pub use crate::components::*;
     pub use crate::map::*;
+    pub use crate::map_builder::*;
     pub use crate::spawner::*;
     pub use crate::systems::*;
-    pub use crate::turn_states::*;
+    pub use crate::turn_state::*;
 }
 
 use prelude::*;
-
-use crate::map_builder::MapBuilder;
 
 struct State {
     ecs: World,
@@ -69,21 +68,25 @@ impl GameState for State {
         ctx.cls();
         ctx.set_active_console(1);
         ctx.cls();
+        ctx.set_active_console(2);
+        ctx.cls();
         self.resources.insert(ctx.key);
-        let current_state = *self.resources.get::<TurnState>().unwrap();
+        ctx.set_active_console(0);
+        self.resources.insert(Point::from_tuple(ctx.mouse_pos()));
+        let current_state = self.resources.get::<TurnState>().unwrap().clone();
         match current_state {
             TurnState::AwaitingInput => self
                 .input_systems
                 .execute(&mut self.ecs, &mut self.resources),
-            TurnState::PlayerTurn => self
-                .player_systems
-                .execute(&mut self.ecs, &mut self.resources),
+            TurnState::PlayerTurn => {
+                self.player_systems
+                    .execute(&mut self.ecs, &mut self.resources);
+            }
             TurnState::MonsterTurn => self
                 .monster_systems
                 .execute(&mut self.ecs, &mut self.resources),
         }
         render_draw_buffer(ctx).expect("Render error");
-        // TODO: Render Draw Buffer
     }
 }
 
@@ -94,9 +97,12 @@ fn main() -> BError {
         .with_dimensions(DISPLAY_WIDTH, DISPLAY_HEIGHT)
         .with_tile_dimensions(32, 32)
         .with_resource_path("resources/")
-        .with_font("dungeonfont.png", 32, 32)
-        .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
+        .with_font("dungeonfont.png", 32, 32) // (1)
+        .with_font("terminal8x8.png", 8, 8) // (2)
+        .with_simple_console(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png") // (3)
         .with_simple_console_no_bg(DISPLAY_WIDTH, DISPLAY_HEIGHT, "dungeonfont.png")
+        .with_simple_console_no_bg(SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, "terminal8x8.png") // (4)
         .build()?;
+
     main_loop(context, State::new())
 }
